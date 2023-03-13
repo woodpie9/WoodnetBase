@@ -6,7 +6,7 @@
 
 void woodnet::StreamQueue::clear()
 {
-	// 변수들과 버퍼를 0으로 반환합니다.
+	// 변수들과 버퍼를 0으로 초기화합니다.
 	m_dataCount = m_readIndex = m_writeIndex = 0;
 	memset(m_buffer, 0, m_size);
 }
@@ -55,15 +55,17 @@ bool woodnet::StreamQueue::peek(char* peekBuf, int peekLen) const
 		// 읽기 인덱스로부터 큐의 끝까지의 크기를 구합니다.
 		const int back_part = m_size - m_readIndex;
 
+		// 읽는 범위가 큐의 끝 보다 짧다면 바로 읽습니다.
 		if (peekLen <= back_part)
 		{
 			memcpy(peekBuf, &m_buffer[m_readIndex], peekLen);
 		}
 		else
 		{
-			// 남은 peek 길이를 구합니다.
+			// 큐의 끝까지 읽은 후 남은 peek 길이를 구합니다.
 			const int fore_part = peekLen - back_part;
 
+			// 큐의 마지막까지 읽은 후, 큐의 처음부터 남은 길이만큼 읽습니다.
 			memcpy(&peekBuf[0], &m_buffer[m_readIndex], back_part);
 			memcpy(&peekBuf[back_part], &m_buffer[0], fore_part);
 		}
@@ -74,12 +76,15 @@ bool woodnet::StreamQueue::peek(char* peekBuf, int peekLen) const
 
 int woodnet::StreamQueue::read(char* desBuf, int bufLen)
 {
+	// 큐에서 데이터를 읽어옵니다.
+
+	// 큐가 비어있다면 읽을 수 없습니다.
 	if (is_empty()) return 0;
 
-	// 버퍼 내에 있는 데이터 수 or 원하는 데이터 의 수 중에 작은 수만큼 읽는다.
+	// 버퍼 내에 있는 데이터 갯수 or 원하는 데이터 의 갯수 중에 작은 갯수만큼 읽습니다.
 	const int read_count = std::min<short>(m_dataCount, bufLen);
 
-	// 읽기 인덱스가 쓰기 인덱스보다 앞에 있으면 처음부터 읽기 인덱스까지 복사
+	// 읽기 인덱스가 쓰기 인덱스보다 뒤에 있으면 읽기 인덱스부터 읽습니다.
 	if (m_readIndex < m_writeIndex)
 	{
 		memcpy(desBuf, &m_buffer[m_readIndex], read_count);
@@ -89,23 +94,26 @@ int woodnet::StreamQueue::read(char* desBuf, int bufLen)
 		// 읽기 인덱스로부터 큐의 끝까지의 크기를 구합니다.
 		int back_part = m_size - m_readIndex;
 
+		// 읽는 범위가 큐의 끝보다 짧다면 바로 읽습니다.
 		if (read_count <= back_part)
 		{
-
 			memcpy(desBuf, &m_buffer[m_readIndex], read_count);
 		}
 		else
 		{
+			// 큐의 끝까지 읽은 후 남은 길이를 구합니다.
 			int fore_part = read_count - back_part;
+
+			// 큐의 마지막까지 읽은 후, 큐의 처음부터 남은 길이만큼 읽습니다.
 			memcpy(&desBuf[0], &m_buffer[m_readIndex], back_part);
 			memcpy(&desBuf[back_part], &m_buffer[0], fore_part);
 		}
 	}
 
-	m_dataCount -= read_count;
-	m_readIndex += read_count;
+	m_dataCount -= read_count;		// 읽은 갯수만큼 총 데이터 갯수에서 뺍니다.
+	m_readIndex += read_count;		// 읽은 갯수만큼 읽기 인덱스를 이동합니다.
 
-	if (m_readIndex >= m_size)
+	if (m_readIndex >= m_size)		// 읽기 인덱스를 올바른 위치로 이동시킵니다.
 		m_readIndex -= m_size;
 
 	return read_count;
@@ -113,11 +121,16 @@ int woodnet::StreamQueue::read(char* desBuf, int bufLen)
 
 int woodnet::StreamQueue::write(const char* srcData, int bytesData)
 {
+	// 큐에 데이터를 작성합니다.
+
+	// 큐가 가득 차있다면 작성할 수 없습니다.
 	if (is_full()) return 0;
 
+	// 큐의 남아있는 칸 수와 작성하고 싶은 데이터의 갯수 중 작은 수 만큼 작성합니다.
 	const int left = remain();
 	const int write_count = std::min<short>(left, bytesData);
 
+	// 쓰기 인덱스가 읽기 인덱스보다 뒤에 있으면 쓰기 인덱스부터 씁니다.
 	if (m_readIndex > m_writeIndex)
 	{
 		memcpy(&m_buffer[m_writeIndex], srcData, write_count);
@@ -126,6 +139,7 @@ int woodnet::StreamQueue::write(const char* srcData, int bytesData)
 	{
 		const int back_space = m_size - m_writeIndex;
 
+		// 
 		if (back_space >= write_count)
 		{
 			memcpy(&m_buffer[m_writeIndex], srcData, write_count);

@@ -3,8 +3,8 @@
 #include "CommonDefines.h"
 #include <cstdlib>
 
-
-// 230309 woodpie9 코드 생성, 주석 작성중
+// 202310 코드에 주석 작성 완료
+// 230309 woodpie9 코드 생성
 // TCP 네트워크 데이터는 바이트스트림으로 다룬다.
 // 환영 큐로 바이트스트림을 구현한다.
 
