@@ -131,6 +131,7 @@
     <ClCompile Include="TCPSocket.cpp" />
     <ClCompile Include="testmain.cpp" />
     <ClCompile Include="UDPSocket.cpp" />
+    <ClCompile Include="WinNetwork.cpp" />
     <ClCompile Include="WinSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +139,7 @@
     <ClInclude Include="StreamQueue.h" />
     <ClInclude Include="TCPSocket.h" />
     <ClInclude Include="UDPSocket.h" />
+    <ClInclude Include="WinNetwork.h" />
     <ClInclude Include="WinSocket.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
