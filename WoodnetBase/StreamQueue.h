@@ -42,7 +42,7 @@ public:
 	int write(const char* srcData, int bytesData);
 
 private:
-	int m_size;					// 환영 큐의 크기
+	short m_size;					// 환영 큐의 크기
 	short m_dataCount;			// 큐에 있는 데이터의 갯수
 	short m_readIndex;			// 읽을 데이터가 있는 위치
 	short m_writeIndex;			// 데이터를 쓸 수있는 위치
