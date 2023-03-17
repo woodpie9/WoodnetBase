@@ -53,7 +53,7 @@ bool woodnet::WinSocket::Bind(SOCKADDR_IN& localAddr)
 
 	m_local_addr_ = localAddr;
 
-	return false;
+	return true;
 }
 
 void woodnet::WinSocket::Close()
