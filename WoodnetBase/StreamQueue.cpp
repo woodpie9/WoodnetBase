@@ -1,8 +1,5 @@
-// ReSharper disable CppClangTidyClangDiagnosticInvalidUtf8
 #include "StreamQueue.h"
-
 #include <algorithm>
-#include <cstring>
 
 void woodnet::StreamQueue::clear()
 {
@@ -42,8 +39,7 @@ bool woodnet::StreamQueue::peek(char* peekBuf, int peekLen) const
 {
 	// 큐에서 데이터를 제거하지 않고 데이터를 복사합니다.
 	// 큐의 최대 크기보다 더 많이 peek 할 수는 없습니다.
-	if (peekLen > count())
-		return false;
+	if (peekLen > count()) return false;
 
 	// 쓰기 인덱스가 더 크면 처음부터 읽기 인덱스까지 복사합니다.
 	if (m_readIndex < m_writeIndex)

@@ -1,7 +1,6 @@
-// ReSharper disable CppClangTidyClangDiagnosticInvalidUtf8
 #pragma once
 #include "CommonDefines.h"
-#include <cstdlib>
+#include <cstdlib>					// C 표준 유틸리티 함수들을 모아놓은 해더파일
 
 // 202310 코드에 주석 작성 완료
 // 230309 woodpie9 코드 생성

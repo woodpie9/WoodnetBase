@@ -1,4 +1,3 @@
-// ReSharper disable CppClangTidyClangDiagnosticInvalidUtf8
 #pragma once
 #include "WinSocket.h"
 #include "StreamQueue.h"
@@ -13,7 +12,7 @@ class TCPSocket : public WinSocket
 {
 	struct TCPBuffer
 	{
-		
+
 	};
 
 public:
@@ -23,12 +22,12 @@ public:
 	TCPSocket();
 	~TCPSocket();
 
-	bool	Connect(SOCKADDR_IN& remoteAddr);
+	bool Connect(SOCKADDR_IN& remoteAddr);
 
-	bool	Listen();
+	bool Listen();
 
-	int		Recv(char* pInBuf, int nLen, int& error, LPWSAOVERLAPPED pOv = NULL, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine = NULL);
-	int		Send(char* pOutBuf, int nLen, int& error, LPWSAOVERLAPPED pOv = NULL, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine = NULL);
+	int	Recv(char* pInBuf, int nLen, int& error, LPWSAOVERLAPPED pOv = NULL, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine = NULL);
+	int	Send(char* pOutBuf, int nLen, int& error, LPWSAOVERLAPPED pOv = NULL, LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine = NULL);
 
 
 
@@ -45,8 +44,8 @@ protected:
 
 
 private:
-	TCPBuffer m_SendBuf;
-	TCPBuffer m_RecvBuf;
+	TCPBuffer m_send_buf_;
+	TCPBuffer m_recv_buf_;
 
 	StreamQueue* m_pSendQ;
 	StreamQueue* m_pRecvQ;
